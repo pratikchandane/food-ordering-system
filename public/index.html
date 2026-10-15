@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshBite | Online Food Ordering System</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header Banner -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <span class="brand-icon">🍕</span>
+        <div>
+          <h1>FreshBite</h1>
+          <p class="tagline">Agile CI/CD Demonstration Project</p>
+        </div>
+      </div>
+      <div class="header-meta">
+        <span class="badge pipeline-badge">● CI/CD Pipeline Verified</span>
+        <span class="badge port-badge">Port 3000</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-layout">
+    <!-- Left Column: Menu Section -->
+    <section class="menu-section">
+      <div class="section-header">
+        <div>
+          <h2>Explore Our Delicious Menu</h2>
+          <p class="subtitle">Select your favorite dishes and choose quantities</p>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="category-filters" id="categoryFilters">
+        <button class="filter-btn active" data-category="All">All Items</button>
+        <button class="filter-btn" data-category="Burgers">🍔 Burgers</button>
+        <button class="filter-btn" data-category="Pizzas">🍕 Pizzas</button>
+        <button class="filter-btn" data-category="Pasta">🍝 Pasta</button>
+        <button class="filter-btn" data-category="Salads">🥗 Salads</button>
+        <button class="filter-btn" data-category="Desserts">🍰 Desserts</button>
+        <button class="filter-btn" data-category="Beverages">🥤 Beverages</button>
+      </div>
+
+      <!-- Food Items Grid -->
+      <div class="food-grid" id="foodGrid">
+        <!-- Rendered dynamically by app.js -->
+        <div class="loading-state">Loading delicious food items...</div>
+      </div>
+    </section>
+
+    <!-- Right Column: Cart and Order Summary -->
+    <aside class="cart-sidebar">
+      <div class="cart-card">
+        <div class="cart-header">
+          <h3>Your Order Cart</h3>
+          <span class="cart-count-badge" id="cartCountBadge">0 items</span>
+        </div>
+
+        <!-- Free Delivery Tracker -->
+        <div class="delivery-perk-box" id="deliveryPerkBox">
+          <div class="perk-text" id="perkText">Add $30.00 to unlock FREE delivery!</div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Cart Items List -->
+        <div class="cart-items" id="cartItemsContainer">
+          <div class="empty-cart-state">
+            <div class="empty-icon">🛒</div>
+            <p>Your cart is empty.</p>
+            <small>Click '+' on any food item to start ordering!</small>
+          </div>
+        </div>
+
+        <!-- Price Breakdown -->
+        <div class="price-breakdown">
+          <div class="price-row">
+            <span>Subtotal</span>
+            <span id="summarySubtotal">$0.00</span>
+          </div>
+          <div class="price-row">
+            <span>Tax (5% GST/Sales Tax)</span>
+            <span id="summaryTax">$0.00</span>
+          </div>
+          <div class="price-row">
+            <span>Delivery Fee</span>
+            <span id="summaryDelivery">$0.00</span>
+          </div>
+          <div class="divider"></div>
+          <div class="price-row grand-total-row">
+            <span>Grand Total</span>
+            <span class="total-amount" id="summaryTotal">$0.00</span>
+          </div>
+        </div>
+
+        <!-- Checkout Form -->
+        <form id="checkoutForm" class="checkout-form">
+          <h4 class="form-title">Customer Details</h4>
+          
+          <div class="form-group">
+            <label for="customerName">Full Name *</label>
+            <input type="text" id="customerName" name="customerName" placeholder="e.g. John Doe" required>
+          </div>
+
+          <div class="form-group">
+            <label for="customerPhone">Phone Number *</label>
+            <input type="tel" id="customerPhone" name="customerPhone" placeholder="e.g. 9876543210" required>
+          </div>
+
+          <div class="form-group">
+            <label for="customerAddress">Delivery Address *</label>
+            <textarea id="customerAddress" name="customerAddress" rows="2" placeholder="e.g. Flat 301, Sunshine Heights, Bangalore" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="specialInstructions">Special Instructions (Optional)</label>
+            <input type="text" id="specialInstructions" name="specialInstructions" placeholder="e.g. Less spicy, ring the doorbell">
+          </div>
+
+          <button type="submit" class="btn-checkout" id="placeOrderBtn" disabled>
+            Place Order • <span id="btnTotalText">$0.00</span>
+          </button>
+        </form>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Order Confirmation Modal -->
+  <div class="modal-backdrop" id="confirmationModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="success-icon-wrap">
+          <span class="success-icon">✓</span>
+        </div>
+        <h3 id="modalTitle">Order Confirmed!</h3>
+        <p class="modal-subtitle">Your meal is being prepared with love and care.</p>
+      </div>
+
+      <div class="order-receipt-box">
+        <div class="receipt-header">
+          <div>
+            <div class="receipt-label">Order Number</div>
+            <div class="receipt-value" id="receiptOrderId">ORD-000000</div>
+          </div>
+          <div class="text-right">
+            <div class="receipt-label">Estimated Delivery</div>
+            <div class="receipt-value highlight" id="receiptDeliveryTime">35 mins</div>
+          </div>
+        </div>
+
+        <div class="receipt-divider"></div>
+
+        <div class="receipt-customer-details">
+          <div class="receipt-row">
+            <span><strong>Customer:</strong></span>
+            <span id="receiptCustomerName">-</span>
+          </div>
+          <div class="receipt-row">
+            <span><strong>Deliver To:</strong></span>
+            <span id="receiptCustomerAddress">-</span>
+          </div>
+          <div class="receipt-row">
+            <span><strong>Phone:</strong></span>
+            <span id="receiptCustomerPhone">-</span>
+          </div>
+        </div>
+
+        <div class="receipt-divider"></div>
+
+        <div class="receipt-items-list" id="receiptItemsList">
+          <!-- Item breakdown rendered here -->
+        </div>
+
+        <div class="receipt-divider"></div>
+
+        <div class="receipt-totals">
+          <div class="receipt-row">
+            <span>Subtotal:</span>
+            <span id="receiptSubtotal">$0.00</span>
+          </div>
+          <div class="receipt-row">
+            <span>Tax (5%):</span>
+            <span id="receiptTax">$0.00</span>
+          </div>
+          <div class="receipt-row">
+            <span>Delivery Fee:</span>
+            <span id="receiptDelivery">$0.00</span>
+          </div>
+          <div class="receipt-row receipt-grand-total">
+            <span>Grand Total Paid:</span>
+            <span id="receiptGrandTotal">$0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-primary" id="btnNewOrder">Order Something Else</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <p>FA-2 Activity: Design and Demonstrate a Simple CI/CD Pipeline for an Agile Project</p>
+    <p class="footer-sub">Built with Node.js, Express, Automated Native Tests, and Jenkins Pipeline</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
