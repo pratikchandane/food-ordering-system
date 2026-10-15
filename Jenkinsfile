@@ -70,8 +70,9 @@ pipeline {
                     start "FoodOrderingApp" /B node server.js
 
                     echo [3/3] Waiting for server warm-up and verifying health check...
-                    timeout /t 4 /nobreak >nul
+                    powershell -NoProfile -Command "Start-Sleep -Seconds 4"
                     powershell -Command "try { $res = Invoke-RestMethod -Uri 'http://localhost:3000/api/health'; Write-Host ('[DEPLOYMENT VERIFIED] Status: ' + $res.status + ' - ' + $res.message) } catch { Write-Error 'Deployment verification failed'; exit 1 }"
+                    if errorlevel 1 exit /b 1
                     
                     echo ====================================================
                     echo DEPLOYMENT SUCCESSFUL!
