@@ -1,6 +1,6 @@
 // src/menuData.js
 // This file stores the food items, their categories, descriptions, and prices.
-
+// Agile feature branch change: menu data reviewed for version-control workflow.
 const menuItems = [
   {
     id: 1,
