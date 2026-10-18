@@ -227,3 +227,20 @@ Jenkins can also build directly from your local directory! In Jenkins, you can s
 
 **Q3: How does the pipeline handle a test failure?**  
 *Answer:* If any of the 14 unit tests fail, the `Automated Testing` stage exits with a non-zero code. Jenkins immediately stops the pipeline, marks the build as RED (Failed), and blocks the Deployment stage, preventing broken code from reaching users.
+
+
+## Food Menu Feature
+
+The Online Food Delivery System allows customers
+to view available food items and their prices.
+
+### Sample Menu
+
+| Food Item | Price |
+|---|---:|
+| Veg Burger | 120 |
+| Pizza | 250 |
+| Sandwich | 100 |
+
+Customers can browse the menu before placing an order.
+
